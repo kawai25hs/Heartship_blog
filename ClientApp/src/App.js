@@ -1,22 +1,24 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import { Routes, Route } from "react-router-dom";
+import Navbar from './Navbar';
+import Home from './Home';
+import Posts from './Posts';
+import NewPost from './NewPost';
+import Footer from './Footer';
 
-import './custom.css'
-
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
+function App() {
+  return (
+    <div className="App">
+      <Navbar/>
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="blog" element={<Posts />} />
+          <Route path="newPost" element={<NewPost />} />
+        </Routes>
+        <Footer/>
+      </div>         
+    </div>
+  );
 }
+
+export default App;

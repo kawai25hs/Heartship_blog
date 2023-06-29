@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italianno&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+* {
+  margin: 0;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.navbar {
+  font-family: 'Italiana', serif;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.navbar .links {
+  margin-left: auto;
+}
+
+.links a {
+  margin: 25px;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  padding: 5px 0;
+}
+
+.App .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.home {
+  background-color: black;
+  font-family: 'Italiana', serif;
+  color: rgb(255, 255, 255);
+}
+
+.home .homepageHeader {
+  position: relative;
+}
+
+.home .homepageHeader img {
+  width: 100vw;
+  max-width: 100%;
+  object-fit: cover;
+  height: 100vh;
+}
+
+.home .homepageHeader .headerContent {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+
+.home .homepageHeader p {
+  font-family: "Italianno", cursive;
+  font-size: 36px;
+}
+
+.homepageHeaderBtnContainer {
+  padding-top: 25px;
+}
+
+.homepageHeaderBtn {
+  padding: 10px 50px;
+  text-decoration: none;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 3px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+}
+
+.homepageHeaderBtn:hover {
+  border: 2px solid rgb(220, 220, 220);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.home .container {
+  position: relative;
+  padding: 30px;
+  background-color: rgb(0, 0, 0);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home .container img {
+  margin: 20px 0px;
+  max-width: 100%;
+}
+
+.home .container .aboutMeHDR {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.aboutMeContent {
+  padding-top: 30px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aboutMeContent p {
+  font-family: 'Noto Sans', sans-serif;
+  color: rgb(200, 200, 200);
+}
+
+.home .container .featuredPostsHDR {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.home .container .featuredPosts {
+  padding-top: 30px;
+  margin-bottom: 100px;
+}
+
+.blogWrapper {
+  background-color: black;
+  width: 100vw;
+  color: rgb(255, 255, 255);
+  font-family: 'Italiana', serif;
+}
+
+.pageHeader {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageHeader h1 {
+  margin-top: 100px;
+}
+
+.pageContainer {
+  padding: 30px;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.pageContainer img {
+  max-width: 100%;
+}
+ 
+.postsPagination {
+  display: flex;
+  align-items: center;
+}
+
+.newPostWrapper {
+  background-color: black;
+  width: 100vw;
+  min-height: 100vh;
+  font-family: 'Italiana', serif;
+  color: rgb(255, 255, 255);
+}
+
+.newPostContainer {
+  padding: 30px;
+  margin: 0 auto;
+  max-width: 1200px;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.newPostWrapper .toolbarClassName {
+  background-color: rgb(48, 48, 48);
+  border-width: 0;
+  color: rgb(0, 0, 0);
+}
+
+.newPostWrapper .editorClassName {
+  border: 1px solid grey;
+  padding: 0 10px;
+  min-height: 250px;
+}
+
+.newPostWrapper .editorBlockTypeClassName {
+  background-color: rgb(255, 255, 255);
+}
+
+.newPostWrapper .editorFontSizeClassName {
+  background-color: rgb(255, 255, 255);
+}
+
+.newPostWrapper .editorFontFamilyClassName {
+  background-color: rgb(255, 255, 255);
+}
+
+.newPostWrapper .rdw-image-alignment-options-popup {
+  color: black;
+}
+
+.greywords {
+  font-family: 'Noto Sans', sans-serif;
+  color: rgb(200, 200, 200);
+}
+
+.footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(27, 27, 27);
+  text-align: center;
+  padding: 30px;
+  color: rgb(255, 255, 255);
+  font-family: 'Italiana', serif;
+}
