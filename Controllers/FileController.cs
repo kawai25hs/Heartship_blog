@@ -1,22 +1,28 @@
-﻿using core_blog_backend.Models;
+﻿using netcore_blog.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 
-namespace core_blog_backend.Controllers
+namespace netcore_blog.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class FileController : ControllerBase
     {
+        private readonly IWebHostEnvironment hostingEnvironment;
+        public FileController(IWebHostEnvironment environment)
+        {
+            hostingEnvironment = environment;
+        }
+
         [HttpPost]
         [Route("upload")]
         public ActionResult Post([FromForm] FileModel file)
         {
             try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FileName);
+                string path = Path.Combine(hostingEnvironment.WebRootPath, file.FileName);//Directory.GetCurrentDirectory()
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
                     file.FormFile.CopyTo(stream);
@@ -32,9 +38,9 @@ namespace core_blog_backend.Controllers
 
         [HttpGet]
         [Route("getTen")]
-        public Int32 Get()
+        public ActionResult Get()
         {
-            return 10;
+            return Ok("all good");//StatusCode(StatusCodes.Status200OK);
         }
     }
 }

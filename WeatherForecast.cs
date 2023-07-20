@@ -1,4 +1,4 @@
-namespace core_blog_backend
+namespace netcore_blog
 {
     public class WeatherForecast
     {

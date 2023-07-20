@@ -160,6 +160,7 @@ html, body {
 .postsPagination {
   display: flex;
   align-items: center;
+  margin: 15px 0;
 }
 
 .newPostWrapper {
@@ -219,4 +220,5 @@ html, body {
   padding: 30px;
   color: rgb(255, 255, 255);
   font-family: 'Italiana', serif;
+  height: 100px;
 }

@@ -3,8 +3,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import StyledTextfield from './components/StyledTextfield';
 import StyledSelect from './components/StyledSelect';
+import StyledSwitch from './components/StyledSwitch';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from 'draftjs-to-html';
@@ -15,32 +18,60 @@ import axios from 'axios';
 import date from 'date-and-time';
 
 const NewPost = () => {
+    const [subject, setSubject] = useState([]);
+    const [category, setCategory] = useState("");
+    const [description, setDescription] = useState([]);
+    const [thumbnail, setThumbnail] = useState([]);
+    const [feature, setFeature] = useState(false);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [uploadedImages, setUploadedImages] = useState([]);
+
+    const switchItem = [
+      {
+        value: '',
+        name: 'None'
+      },
+      {
+        value: 'Inspirational Ideas',
+        name: 'Inspirational Ideas'
+      },
+      {
+        value: 'Game design',
+        name: 'Game design'
+      },
+      {
+        value: 'Diary',
+        name: 'Diary'
+      }
+    ]
 
     const updateEditorState = (e) => {
         setEditorState(e.target.value);
     };
 
-    const uploadImageCallBack = (file) => {
+    const uploadImageCallBack = async (file) => {
         console.log('file: ', file);
-        const now = new Date();
+        let now = new Date();
+        now = date.format(now, 'YYYYMMDD_HH_mm_ss');
         const formData = new FormData();
         const fileName = file?.name.slice(0, file?.name.lastIndexOf(".")) + "_" + now + file?.name.slice(file?.name.lastIndexOf("."));
         formData.append("formFile", file);
         formData.append("fileName", fileName);
+
+        await axios.post('file/upload', formData);
         // long story short, every time we upload an image, we
         // need to save it to the state so we can get it's data
         // later when we decide what to do with it.
     
         // Make sure you have a uploadImages: [] as your default state
         let images = uploadedImages;
-    
+        
         const imageObject = {
           file: file,
-            localSrc: fetch('api/file/getTen')//axios.post('api/file', formData), //URL.createObjectURL(file),
+          localSrc: URL.createObjectURL(file), //'img/'+fileName,
+          fileName: fileName
         }
-    console.log('imageObject', imageObject);
+        console.log('imageObject', imageObject);
         images.push(imageObject);
     
         setUploadedImages(images);
@@ -82,27 +113,23 @@ const NewPost = () => {
     useEffect(() => {
         console.log('editorState', draftToHtml(convertToRaw(editorState?.getCurrentContent())));
     }, [editorState]);
+
+    useEffect(() => {
+        console.log('uploadedImages', uploadedImages);
+    }, [uploadedImages]);
+
+    useEffect(() => {
+        console.log('subject', subject);
+    }, [subject]);
+
     // const onEditorStateChange2 = useEffect(() => {
 
     //     console.log('editorState', editorState);
     // }, [editorState]);
-
+    
     useEffect(() => {
-        axios.get('file/getTen')
-            .then(function (response) {
-                // handle success
-                console.log('getTen', response);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .finally(function () {
-                // always executed
-            });
-
-        //console.log('getTen', axios('api/file/getTen'));
-    }, []);
+        console.log('thumbnail', thumbnail);
+    }, [thumbnail]);
 
     return (
         <div className="newPostWrapper">
@@ -116,13 +143,35 @@ const NewPost = () => {
                         spacing={{ xs: 2 }}
                     >
                         <Grid item xs={12}>
-                            <StyledTextfield label="Subject"/>
+                            <StyledTextfield
+                                label="Subject"
+                                value={subject}
+                                onChange={(e) => {
+                                    setSubject(e.target.value);
+                                }}
+                            />
                         </Grid>
                         <Grid item xs={12}>
-                            <StyledSelect/>
+                            <StyledSelect
+                                item={switchItem}
+                                value={category}
+                                onChange={(e) => {
+                                    setCategory(e.target.value);
+                                }}
+                            />
                         </Grid>
                         <Grid item xs={12}>
-                            <StyledTextfield label="Description" multiline maxRows={2} fullWidth/>
+                            <StyledTextfield
+                                label="Description"
+                                multiline
+                                maxRows={2}
+                                fullWidth
+                                inputProps={{ maxLength: 50 }}
+                                value={description}
+                                onChange={(e) => {
+                                    setDescription(e.target.value);
+                                }}
+                            />
                         </Grid>
                         <Grid item xs={12} style={{marginTop: '5px'}}>
                             Content
@@ -151,9 +200,27 @@ const NewPost = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <StyledTextfield label="Thumbnail" type="file"/>
-                        </Grid>                        
-                        <Grid item xs={12} style={{display: 'flex', justifyContent: 'center'}}>
+                            <StyledTextfield
+                                label="Thumbnail"
+                                type="file"
+                                value={thumbnail}
+                                onChange={(e) => {
+                                    setThumbnail(e.target.value);
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={<StyledSwitch />}
+                                label="Featured"
+                                labelPlacement="start"
+                                value={feature}
+                                onChange={(e) => {
+                                    setFeature(e.target.value);
+                                }}
+                            />
+                        </Grid>                          
+                        <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', margin: '25px 0'}}>
                             <Button variant="contained" size="large" sx={{color: 'white', fontWeight: 'bold', width: '50%'}}>Submit</Button>
                         </Grid>                        
                     </Grid>

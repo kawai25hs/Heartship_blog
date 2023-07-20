@@ -1,8 +1,8 @@
-﻿namespace core_blog_backend.Models
+﻿namespace netcore_blog.Models
 {
     public class FileModel
     {
-        public string FileName { get; set; }
-        public IFormFile FormFile {get; set;}
+        public required string FileName { get; set; }
+        public required IFormFile FormFile {get; set;}
     }
 }

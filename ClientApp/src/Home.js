@@ -1,6 +1,7 @@
 import homepageImg from './img/homepageImg.jpg';
 import me from './img/me.jpg';
 import img1 from './img/img1.jpg';
+//import img1 from '../../wwwroot/uploads/img1_20230629_09_11_52.jpg';
 import img2 from './img/img2.jpg';
 import img3 from './img/img3.jpg';
 import Grid from '@mui/material/Grid';
@@ -98,8 +99,9 @@ const Home = () => {
                         <h3>Elvis Cheung</h3>
                         <br/>
                         <p>
-                            I am a developer and perfectionist. <br/>
-                            I learn things that interest me and also build things that interest you. 
+                            I am no longer a perfectionist. <br /><br />
+                            I learn things that interest me and also build things that interest you. <br />
+                            After many years, I realized perseverance is of the utmost importance in software engineering.
                         </p>
                     </Grid>
                 </Grid>
