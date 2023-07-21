@@ -4,6 +4,7 @@ import Home from './Home';
 import Posts from './Posts';
 import NewPost from './NewPost';
 import Footer from './Footer';
+import NotFound from './NotFound';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="blog" element={<Posts />} />
           <Route path="newPost" element={<NewPost />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
         <Footer/>
       </div>         

@@ -206,6 +206,15 @@ html, body {
   color: black;
 }
 
+.notFoundWrapper {
+  background-color: black;
+  width: 100vw;
+  min-height: 100vh;
+  font-family: 'Italiana', serif;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
 .greywords {
   font-family: 'Noto Sans', sans-serif;
   color: rgb(200, 200, 200);
