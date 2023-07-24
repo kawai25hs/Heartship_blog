@@ -101,7 +101,7 @@ const Home = () => {
                         <p>
                             I am no longer a perfectionist. <br /><br />
                             I learn things that interest me and also build things that interest you. <br />
-                            After many years of contemplating, I realized perseverance is of the utmost importance in software engineering.
+                            After many years of struggling, I still do not give up on software engineering.
                         </p>
                     </Grid>
                 </Grid>

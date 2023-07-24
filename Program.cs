@@ -1,4 +1,6 @@
 using Microsoft.OpenApi.Models;
+using netcore_blog.Models;
+using netcore_blog.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,11 @@ builder.Services.AddSwaggerGen(config =>
 {
     config.SwaggerDoc("v1", new OpenApiInfo() { Title = "Blog API", Version = "v1" });
 });
+builder.Services.Configure<DevDatabaseSettings>(
+    builder.Configuration.GetSection("DevDatabase"));
+
+builder.Services.AddSingleton<PostsService>();
+
 
 var app = builder.Build();
 

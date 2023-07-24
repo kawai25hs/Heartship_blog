@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from './Navbar';
 import Home from './Home';
-import Posts from './Posts';
+import Blog from './Blog';
 import NewPost from './NewPost';
 import Footer from './Footer';
 import NotFound from './NotFound';
@@ -13,7 +13,7 @@ function App() {
       <div className="content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="blog" element={<Posts />} />
+          <Route path="blog" element={<Blog />} />
           <Route path="newPost" element={<NewPost />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

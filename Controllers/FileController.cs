@@ -37,7 +37,6 @@ namespace netcore_blog.Controllers
         }
 
         [HttpGet]
-        [Route("getTen")]
         public ActionResult Get()
         {
             return Ok("all good");//StatusCode(StatusCodes.Status200OK);

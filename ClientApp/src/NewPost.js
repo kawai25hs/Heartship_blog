@@ -22,7 +22,7 @@ const NewPost = () => {
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState([]);
     const [thumbnail, setThumbnail] = useState([]);
-    const [feature, setFeature] = useState(false);
+    const [isFeatured, setisFeatured] = useState(false);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [uploadedImages, setUploadedImages] = useState([]);
 
@@ -131,6 +131,10 @@ const NewPost = () => {
         console.log('thumbnail', thumbnail);
     }, [thumbnail]);
 
+    useEffect(() => {
+        console.log('get posts', axios.get('posts'));
+    }, []);
+
     return (
         <div className="newPostWrapper">
             <div className="newPostWrapperChild">
@@ -214,9 +218,9 @@ const NewPost = () => {
                                 control={<StyledSwitch />}
                                 label="Featured"
                                 labelPlacement="start"
-                                value={feature}
+                                value={isFeatured}
                                 onChange={(e) => {
-                                    setFeature(e.target.value);
+                                    setisFeatured(e.target.value);
                                 }}
                             />
                         </Grid>                          

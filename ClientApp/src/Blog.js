@@ -7,7 +7,7 @@ import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import Stack from '@mui/material/Stack';
 
-const Posts = () => {
+const Blog = () => {
     return (
         <div className="blogWrapper">
             <Grid container className="pageHeader">
@@ -107,4 +107,4 @@ const Posts = () => {
     );
 }
 
-export default Posts;
+export default Blog;
