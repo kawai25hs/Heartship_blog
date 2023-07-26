@@ -1,10 +1,5 @@
 import Grid from '@mui/material/Grid';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import StyledTextfield from './components/StyledTextfield';
 import StyledSelect from './components/StyledSelect';
 import StyledSwitch from './components/StyledSwitch';
@@ -21,9 +16,11 @@ const NewPost = () => {
     const [subject, setSubject] = useState([]);
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState([]);
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [thumbnail, setThumbnail] = useState([]);
     const [isFeatured, setisFeatured] = useState(false);
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+    const [thumbnailFile, setThumbnailFile] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
 
     const switchItem = [
@@ -50,15 +47,9 @@ const NewPost = () => {
     };
 
     const uploadImageCallBack = async (file) => {
-        console.log('file: ', file);
-        let now = new Date();
-        now = date.format(now, 'YYYYMMDD_HH_mm_ss');
-        const formData = new FormData();
-        const fileName = file?.name.slice(0, file?.name.lastIndexOf(".")) + "_" + now + file?.name.slice(file?.name.lastIndexOf("."));
-        formData.append("formFile", file);
-        formData.append("fileName", fileName);
+        let formData = prepareImgFormData(file);
+        uploadImage(formData);
 
-        await axios.post('file/upload', formData);
         // long story short, every time we upload an image, we
         // need to save it to the state so we can get it's data
         // later when we decide what to do with it.
@@ -69,7 +60,7 @@ const NewPost = () => {
         const imageObject = {
           file: file,
           localSrc: URL.createObjectURL(file), //'img/'+fileName,
-          fileName: fileName
+          fileName: formData.fileName
         }
         console.log('imageObject', imageObject);
         images.push(imageObject);
@@ -106,6 +97,23 @@ const NewPost = () => {
 
     };
 
+    const prepareImgFormData = (file) => {
+        let now = new Date();
+        now = date.format(now, 'YYYYMMDD_HH_mm_ss');
+
+        const fileName = file?.name.slice(0, file?.name.lastIndexOf(".")) + "_" + now + file?.name.slice(file?.name.lastIndexOf("."));
+
+        const formData = new FormData();
+        formData.append("formFile", file);
+        formData.append("fileName", fileName);
+
+        return formData;
+    }
+
+    const uploadImage = async (fileData) => {
+        await axios.post('file/upload', fileData);
+    };
+
     const onEditorStateChange = useCallback((state) => {
         setEditorState(state);
     }, [editorState]);
@@ -128,8 +136,13 @@ const NewPost = () => {
     // }, [editorState]);
     
     useEffect(() => {
-        console.log('thumbnail', thumbnail);
-    }, [thumbnail]);
+        if (thumbnailFile) {
+            console.log('thumbnailFile', thumbnailFile);
+            let formData = prepareImgFormData(thumbnailFile);
+            uploadImage(formData);
+        }
+
+    }, [thumbnailFile]);
 
     useEffect(() => {
         console.log('get posts', axios.get('posts'));
@@ -210,6 +223,8 @@ const NewPost = () => {
                                 value={thumbnail}
                                 onChange={(e) => {
                                     setThumbnail(e.target.value);
+                                    setThumbnailFile(e.target?.files?.[0]);
+
                                 }}
                             />
                         </Grid>

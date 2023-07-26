@@ -5,7 +5,7 @@ import { cyan } from '@mui/material/colors';
 const Navbar = () => {
     return ( 
         <nav className="navbar">
-            <img src={logo} alt="logo" width="40"/>
+            <Link to="/"><img src={logo} alt="logo" width="40" /></Link>
             <div className="links">
                 <Link to="/">Home</Link>
                 <Link to="/blog">Blog</Link>
