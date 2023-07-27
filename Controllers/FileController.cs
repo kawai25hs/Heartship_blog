@@ -22,7 +22,7 @@ namespace netcore_blog.Controllers
         {
             try
             {
-                string path = Path.Combine(hostingEnvironment.WebRootPath, file.FileName);//Directory.GetCurrentDirectory()
+                string path = Path.Combine(hostingEnvironment.WebRootPath, file.FileName);
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
                     file.FormFile.CopyTo(stream);

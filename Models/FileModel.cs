@@ -2,7 +2,7 @@
 {
     public class FileModel
     {
-        public required string FileName { get; set; }
-        public required IFormFile FormFile {get; set;}
+        public string FileName { get; set; }
+        public IFormFile FormFile {get; set;}
     }
 }
