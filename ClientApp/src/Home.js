@@ -103,6 +103,10 @@ const Home = () => {
                             I learn things that interest me and also build things that interest you. <br />
                             After many years of struggling, I still do not give up on software engineering.
                         </p>
+                        <br />
+                        <p>
+                            I hope I can brainstorm ideas in this blog and it is also useful to you.
+                        </p>
                     </Grid>
                 </Grid>
             </Grid>

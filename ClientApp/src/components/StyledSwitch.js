@@ -8,6 +8,6 @@ const CssSwitch = styled(Switch)({
 
   });
 
-  export default function StyledTextfield(props) {
-      return <CssSwitch {...props}/>;
+  export default function StyledSwitch(props) {
+      return <CssSwitch onChange={props.handleChange}/>;
   }

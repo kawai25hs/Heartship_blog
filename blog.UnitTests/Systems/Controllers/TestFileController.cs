@@ -11,12 +11,16 @@ namespace blog.UnitTests.Systems.Controllers;
 public class TestFileController
 {
     [Fact]
-    public void Get_OnSuccess_ReturnsStatusCode200()
+    public void Upload_OnSuccess_ReturnsStatusCode200()
     {
         var mockEnvironment = new Mock<IWebHostEnvironment>();
         mockEnvironment.Setup(m => m.WebRootPath).Returns(Environment.CurrentDirectory);
 
-        var fileController = new FileController(mockEnvironment.Object);
+        var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        var httpContext = new DefaultHttpContext();
+        httpContextAccessorMock.Setup(h => h.HttpContext).Returns(httpContext);
+
+        var fileController = new FileController(mockEnvironment.Object, httpContextAccessorMock.Object);
 
         var mockFile = new Mock<IFormFile>();
         var sourceImg = File.OpenRead(@"img1.jpg");
@@ -36,9 +40,9 @@ public class TestFileController
         fm.FileName = fileName;
         fm.FormFile = mockFileObject;
 
-        var result = (StatusCodeResult) fileController.Post(fm);
+        var result = (OkObjectResult) fileController.Post(fm);
 
-        result.StatusCode.Should().Be(201);
+        result.StatusCode.Should().Be(200);
     }
 
 }

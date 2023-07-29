@@ -2,7 +2,13 @@ using Microsoft.OpenApi.Models;
 using netcore_blog.Models;
 using netcore_blog.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+
+var builder = WebApplication.CreateBuilder(
+    new WebApplicationOptions()
+    {
+        WebRootPath = "ClientApp/src"
+    }
+);
 
 // Add services to the container.
 
@@ -16,7 +22,7 @@ builder.Services.Configure<DevDatabaseSettings>(
     builder.Configuration.GetSection("DevDatabase"));
 
 builder.Services.AddSingleton<PostsService>();
-
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

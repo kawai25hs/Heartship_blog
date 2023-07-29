@@ -31,11 +31,12 @@ namespace netcore_blog.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PostsModel newBook)
+        //[Route("newPost")]
+        public async Task<IActionResult> Post(PostsModel newPost)
         {
-            await _postsService.CreateAsync(newBook);
+            await _postsService.CreateAsync(newPost);
 
-            return CreatedAtAction(nameof(Get), new { id = newBook.Id }, newBook);
+            return CreatedAtAction(nameof(Get), new { id = newPost.Id }, newPost);
         }
 
         [HttpPut("{id:length(24)}")]

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace netcore_blog.Controllers
 {
@@ -11,9 +12,12 @@ namespace netcore_blog.Controllers
     public class FileController : ControllerBase
     {
         private readonly IWebHostEnvironment hostingEnvironment;
-        public FileController(IWebHostEnvironment environment)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public FileController(IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             hostingEnvironment = environment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -22,13 +26,19 @@ namespace netcore_blog.Controllers
         {
             try
             {
-                string path = Path.Combine(hostingEnvironment.WebRootPath, file.FileName);
+                var request = _httpContextAccessor.HttpContext?.Request;
+                var baseURL = $"{request.Scheme}://{request.Host}/";
+                string uploadFolder = "uploaded/";
+                var now = DateTime.Now.ToString("yyyyMMdd_HH_mm_ss");
+                string fileName = file.FileName.Substring(0, file.FileName.LastIndexOf(".")) + "_" + now + file.FileName.Substring(file.FileName.LastIndexOf("."));
+
+                string path = Path.Combine(hostingEnvironment.WebRootPath, uploadFolder, fileName);
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
                     file.FormFile.CopyTo(stream);
                 }
 
-                return StatusCode(StatusCodes.Status201Created);
+                return Ok(baseURL + uploadFolder + fileName);
             }
             catch (Exception)
             {

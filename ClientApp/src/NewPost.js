@@ -11,17 +11,21 @@ import React, {useState, useEffect, useCallback} from 'react';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import date from 'date-and-time';
+import { useNavigate } from "react-router-dom";
 
 const NewPost = () => {
-    const [subject, setSubject] = useState([]);
+    const [subject, setSubject] = useState("");
     const [category, setCategory] = useState("");
-    const [description, setDescription] = useState([]);
+    const [description, setDescription] = useState("");
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    const [thumbnail, setThumbnail] = useState([]);
+    const [thumbnailName, setThumbnailName] = useState("");
     const [isFeatured, setisFeatured] = useState(false);
 
+    const [thumbnail, setThumbnail] = useState(null);
     const [thumbnailFile, setThumbnailFile] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
+
+    let navigate = useNavigate();
 
     const switchItem = [
       {
@@ -48,7 +52,7 @@ const NewPost = () => {
 
     const uploadImageCallBack = async (file) => {
         let formData = prepareImgFormData(file);
-        uploadImage(formData);
+        let imgSrc = await uploadImage(formData);
 
         // long story short, every time we upload an image, we
         // need to save it to the state so we can get it's data
@@ -59,8 +63,7 @@ const NewPost = () => {
         
         const imageObject = {
           file: file,
-          localSrc: URL.createObjectURL(file), //'img/'+fileName,
-          fileName: formData.fileName
+          localSrc: imgSrc, //URL.createObjectURL(file),
         }
         console.log('imageObject', imageObject);
         images.push(imageObject);
@@ -98,25 +101,50 @@ const NewPost = () => {
     };
 
     const prepareImgFormData = (file) => {
-        let now = new Date();
-        now = date.format(now, 'YYYYMMDD_HH_mm_ss');
-
-        const fileName = file?.name.slice(0, file?.name.lastIndexOf(".")) + "_" + now + file?.name.slice(file?.name.lastIndexOf("."));
-
         const formData = new FormData();
         formData.append("formFile", file);
-        formData.append("fileName", fileName);
+        formData.append("fileName", file?.name);
 
         return formData;
     }
 
     const uploadImage = async (fileData) => {
-        await axios.post('file/upload', fileData);
+        const response = await axios.post('file/upload', fileData);
+        console.log('response data', response.data);
+        return response.data;
     };
 
     const onEditorStateChange = useCallback((state) => {
         setEditorState(state);
     }, [editorState]);
+
+    const submitPost = async () => {
+        let today = new Date();
+        today = date.format(today, 'YYYY-MM-DD');
+
+        await axios.post('posts', {
+            subject: subject,
+            category: category,
+            content: draftToHtml(convertToRaw(editorState?.getCurrentContent())),
+            description: description,
+            thumbnail: thumbnailName,
+            isFeatured: isFeatured,
+            createdBy: 'Elvis',
+            createDate: today
+        })
+        .then((response) => {
+            navigate(`/post/${response.data.id}`);  
+            console.log(response.data);
+        }, (error) => {
+            console.log(error);
+        });
+    };
+
+    const setThumbnailNameFunc = async () => {
+        const formData = prepareImgFormData(thumbnailFile);
+        setThumbnailName(await uploadImage(formData));
+
+    }
 
     useEffect(() => {
         console.log('editorState', draftToHtml(convertToRaw(editorState?.getCurrentContent())));
@@ -127,27 +155,17 @@ const NewPost = () => {
     }, [uploadedImages]);
 
     useEffect(() => {
-        console.log('subject', subject);
-    }, [subject]);
-
-    // const onEditorStateChange2 = useEffect(() => {
-
-    //     console.log('editorState', editorState);
-    // }, [editorState]);
-    
-    useEffect(() => {
         if (thumbnailFile) {
-            console.log('thumbnailFile', thumbnailFile);
-            let formData = prepareImgFormData(thumbnailFile);
-            uploadImage(formData);
+            setThumbnailNameFunc();
         }
-
     }, [thumbnailFile]);
 
     useEffect(() => {
-        console.log('get posts', axios.get('posts'));
-    }, []);
-
+        if (thumbnailName) {
+            console.log('thumbnailName', thumbnailName);
+        }
+    }, [thumbnailName]);
+    
     return (
         <div className="newPostWrapper">
             <div className="newPostWrapperChild">
@@ -172,7 +190,7 @@ const NewPost = () => {
                             <StyledSelect
                                 item={switchItem}
                                 value={category}
-                                onChange={(e) => {
+                                handleChange={(e) => {
                                     setCategory(e.target.value);
                                 }}
                             />
@@ -181,9 +199,9 @@ const NewPost = () => {
                             <StyledTextfield
                                 label="Description"
                                 multiline
-                                maxRows={2}
+                                maxRows={3}
                                 fullWidth
-                                inputProps={{ maxLength: 50 }}
+                                inputProps={{ maxLength: 150 }}
                                 value={description}
                                 onChange={(e) => {
                                     setDescription(e.target.value);
@@ -212,7 +230,12 @@ const NewPost = () => {
                                     fontFamily: {
                                         dropdownClassName: "editorFontFamilyClassName",
                                     },                                      
-                                    image: { previewImage: true, uploadCallback: uploadImageCallBack, alt: { present: true } },
+                                    image: {
+                                        previewImage: true,
+                                        uploadCallback: uploadImageCallBack,
+                                        alt: { present: true },
+                                        inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                                    },
                                   }}                                
                             />
                         </Grid>
@@ -230,18 +253,29 @@ const NewPost = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
-                                control={<StyledSwitch />}
+                                control={
+                                    <StyledSwitch
+                                        handleChange={(e) => {
+                                            setisFeatured(e.target.checked);
+                                        }}
+                                        checked={isFeatured}
+                                    />
+                                }
                                 label="Featured"
                                 labelPlacement="start"
-                                value={isFeatured}
-                                onChange={(e) => {
-                                    setisFeatured(e.target.value);
-                                }}
                             />
                         </Grid>                          
                         <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', margin: '25px 0'}}>
-                            <Button variant="contained" size="large" sx={{color: 'white', fontWeight: 'bold', width: '50%'}}>Submit</Button>
-                        </Grid>                        
+                            <Button
+                                variant="contained"
+                                size="large"
+                                sx={{ color: 'white', fontWeight: 'bold', width: '50%' }}
+                                onClick={() => {
+                                    submitPost();
+                                }}>
+                                Submit
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
             </div>

@@ -13,7 +13,19 @@ const CssTextField = styled(TextField)({
     },
     '& .MuiInputLabel-root': {
       color: '#fff'
-    }
+    },
+    input: {
+      "&:-webkit-autofill": {
+        WebkitBoxShadow: "0 0 0 1000px black inset",
+        WebkitTextFillColor: '#fff',
+        fontSize: "16px",
+        caretColor: '#fff'
+      }
+    },
+    input2: {
+      WebkitBoxShadow: "0 0 0 1000px black inset",
+      WebkitTextFillColor: '#fff'
+    },
 
   });
 

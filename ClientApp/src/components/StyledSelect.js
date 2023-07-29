@@ -5,10 +5,6 @@ import StyledTextfield from './StyledTextfield';
 import { cyan } from '@mui/material/colors';
   
 export default function CustomizedSelects(props) {
-    const [value, setValue] = React.useState('');
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
 
     return (
         <FormControl variant="standard">
@@ -16,8 +12,7 @@ export default function CustomizedSelects(props) {
                 select
                 label="Categories"
                 id="customized-select"
-                value={value}
-                onChange={handleChange}
+                onChange={props.handleChange}
                 SelectProps={{
                     sx: {
                         "& .MuiSvgIcon-root": {
