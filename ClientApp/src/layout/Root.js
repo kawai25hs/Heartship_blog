@@ -6,7 +6,7 @@ export default function Root() {
     return (
         <div className="Root">
             <header>
-                <nav className="navbar">
+                <nav>
                     <NavLink to="/"><img src={logo} alt="logo" width="40" /></NavLink>
                     <div className="links">
                         <NavLink to="/">Home</NavLink>

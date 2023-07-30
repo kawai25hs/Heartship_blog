@@ -11,15 +11,28 @@ html, body {
   overflow-x: hidden;
 }
 
-.navbar {
+p {
+  margin-bottom: 30px;
+}
+
+nav {
   font-family: 'Italiana', serif;
   display: flex;
   align-items: center;
   padding: 20px;
 }
 
-.navbar .links {
+nav .links {
   margin-left: auto;
+}
+
+::selection {
+  background: #FFBF00; /* WebKit/Blink Browsers */
+  color: rgb(0, 0, 0);
+}
+::-moz-selection {
+  background: #FFBF00; /* Gecko Browsers */
+  color: rgb(0, 0, 0);
 }
 
 .links a {
@@ -28,6 +41,11 @@ html, body {
   color: rgb(255, 255, 255);
   font-size: 20px;
   padding: 5px 0;
+}
+
+.links a.active {
+  border-top-style: solid;
+  border-top-color: #FFBF00;
 }
 
 main {
@@ -134,6 +152,14 @@ main {
   width: 100vw;
   color: rgb(255, 255, 255);
   font-family: 'Italiana', serif;
+  min-height: 100vh;
+}
+
+.blogWrapper .wrap {
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-color: rgb(36, 36, 36);
+  border-width: 1px;
 }
 
 .pageHeader {
