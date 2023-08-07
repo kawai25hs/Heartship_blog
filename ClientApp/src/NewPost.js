@@ -13,7 +13,7 @@ import axios from 'axios';
 import date from 'date-and-time';
 import { useNavigate } from "react-router-dom";
 
-const NewPost = () => {
+export default function NewPost() {
     const [subject, setSubject] = useState("");
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
@@ -24,6 +24,8 @@ const NewPost = () => {
     const [thumbnail, setThumbnail] = useState(null);
     const [thumbnailFile, setThumbnailFile] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
+    const [isValid, setIsValid] = useState({subject: false, category: false, description: false, thumbnailFile: false});
+    const [formError, setFormError] = useState(false);
 
     let navigate = useNavigate();
 
@@ -118,26 +120,35 @@ const NewPost = () => {
         setEditorState(state);
     }, [editorState]);
 
-    const submitPost = async () => {
-        let today = new Date();
-        today = date.format(today, 'YYYY-MM-DD');
+    const checkForm = () => {
+        return (!isValid.subject || !isValid.category || !isValid.description || !isValid.thumbnailFile);
+    }
 
-        await axios.post('posts', {
-            subject: subject,
-            category: category,
-            content: draftToHtml(convertToRaw(editorState?.getCurrentContent())),
-            description: description,
-            thumbnail: thumbnailName,
-            isFeatured: isFeatured,
-            createdBy: 'Elvis',
-            createDate: today
-        })
-        .then((response) => {
-            navigate(`/post/${response.data.id}`);  
-            console.log(response.data);
-        }, (error) => {
-            console.log(error);
-        });
+    const submitPost = async () => {
+        if (checkForm()) {
+            setFormError(true);
+            return false;
+        } else {
+            let today = new Date();
+            today = date.format(today, 'YYYY-MM-DD');
+
+            return await axios.post('posts', {
+                subject: subject,
+                category: category,
+                content: draftToHtml(convertToRaw(editorState?.getCurrentContent())),
+                description: description,
+                thumbnail: thumbnailName,
+                isFeatured: isFeatured,
+                createdBy: 'Elvis',
+                createDate: today
+            })
+            .then((response) => {
+                navigate(`/post/${response.data.id}`);  
+                console.log(response.data);
+            }, (error) => {
+                console.log(error);
+            });
+        }
     };
 
     const setThumbnailNameFunc = async () => {
@@ -145,6 +156,27 @@ const NewPost = () => {
         setThumbnailName(await uploadImage(formData));
 
     }
+
+    useEffect(() => {
+        setIsValid({
+            ...isValid,
+            subject: !(!subject)
+        });
+    }, [subject]);
+
+    useEffect(() => {
+        setIsValid({
+            ...isValid,
+            category: !(!category)
+        });
+    }, [category]);
+
+    useEffect(() => {
+        setIsValid({
+            ...isValid,
+            description: !(!description)
+        });
+    }, [description]);
 
     useEffect(() => {
         console.log('editorState', draftToHtml(convertToRaw(editorState?.getCurrentContent())));
@@ -157,14 +189,12 @@ const NewPost = () => {
     useEffect(() => {
         if (thumbnailFile) {
             setThumbnailNameFunc();
-        }
+        }        
+        setIsValid({
+            ...isValid,
+            thumbnailFile: !(!thumbnailFile)
+        });
     }, [thumbnailFile]);
-
-    useEffect(() => {
-        if (thumbnailName) {
-            console.log('thumbnailName', thumbnailName);
-        }
-    }, [thumbnailName]);
     
     return (
         <div className="newPostWrapper">
@@ -184,6 +214,9 @@ const NewPost = () => {
                                 onChange={(e) => {
                                     setSubject(e.target.value);
                                 }}
+                                required
+                                error={formError && !isValid.subject}
+                                helperText="Subject cannot be empty."
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -193,6 +226,9 @@ const NewPost = () => {
                                 handleChange={(e) => {
                                     setCategory(e.target.value);
                                 }}
+                                required
+                                error={formError && !isValid.category}
+                                helperText="Category cannot be empty."
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -206,6 +242,9 @@ const NewPost = () => {
                                 onChange={(e) => {
                                     setDescription(e.target.value);
                                 }}
+                                required
+                                error={formError && !isValid.description}
+                                helperText="Description cannot be empty."
                             />
                         </Grid>
                         <Grid item xs={12} style={{marginTop: '5px'}}>
@@ -223,10 +262,10 @@ const NewPost = () => {
                                     options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'emoji', 'image', 'remove', 'history'],
                                     blockType: {
                                         dropdownClassName: "editorBlockTypeClassName",
-                                      },
-                                      fontSize: {
+                                    },
+                                    fontSize: {
                                         dropdownClassName: "editorFontSizeClassName",
-                                      },
+                                    },
                                     fontFamily: {
                                         dropdownClassName: "editorFontFamilyClassName",
                                     },                                      
@@ -236,7 +275,8 @@ const NewPost = () => {
                                         alt: { present: true },
                                         inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
                                     },
-                                  }}                                
+                                }}
+                                handlePastedText={() => false}          
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -247,8 +287,10 @@ const NewPost = () => {
                                 onChange={(e) => {
                                     setThumbnail(e.target.value);
                                     setThumbnailFile(e.target?.files?.[0]);
-
                                 }}
+                                required
+                                error={formError && !isValid.thumbnailFile}
+                                helperText="Thumbnail cannot be empty."
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -282,5 +324,3 @@ const NewPost = () => {
         </div>
     );
 }
-
-export default NewPost;

@@ -16,6 +16,9 @@ const theme = createTheme({
     secondary: {
       main: amber[500],
     },
+    error: {
+      main: "#ff604f"
+    }
   },
 });
 

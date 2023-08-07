@@ -35,6 +35,9 @@ export default function CustomizedSelects(props) {
                         disableScrollLock: true
                     }
                 }}
+                required={props.required}
+                error={props.error}
+                helperText={props.helperText}
             >
                 {props.item.map(item => (
                     <MenuItem value={item.value}>{item.name}</MenuItem>

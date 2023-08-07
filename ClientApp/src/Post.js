@@ -1,8 +1,15 @@
 import Grid from '@mui/material/Grid';
 import { useLoaderData } from 'react-router-dom';
 
-const Post = () => {
+export default function Post() {
     const post = useLoaderData()
+
+//     const contentBlock = htmlToDraft("<p>12345</p>");
+// const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+
+
+// const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState));
+
 
     return (
         <div className="blogWrapper">
@@ -21,6 +28,7 @@ const Post = () => {
                     <Grid item xs={12}>
                         <h5>Written by {post?.createdBy}&nbsp;&nbsp;{post?.createDate}</h5>
                         <br/>
+                        <br/>
                     </Grid>
                     <Grid item xs={12}>
                         <div dangerouslySetInnerHTML={{__html:post?.content}} />
@@ -31,4 +39,14 @@ const Post = () => {
     );
 }
 
-export default Post;
+export const postLoader = async ({ params }) => {
+    const { Id } = params
+
+    const res = await fetch('/posts/' + Id)
+
+    if (!res.ok) {
+        throw Error('Could not find the post.')
+    }
+
+    return res.json()
+}
