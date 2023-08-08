@@ -12,7 +12,7 @@ export default function Post() {
 
 
     return (
-        <div className="blogWrapper">
+        <div className="postWrapper">
             <Grid container className="pageHeader">
                 <h1>{post?.subject}</h1>
             </Grid>
@@ -31,7 +31,7 @@ export default function Post() {
                         <br/>
                     </Grid>
                     <Grid item xs={12}>
-                        <div dangerouslySetInnerHTML={{__html:post?.content}} />
+                        <div className='content' dangerouslySetInnerHTML={{__html:post?.content}} />
                     </Grid>
                 </Grid>
             </Grid>

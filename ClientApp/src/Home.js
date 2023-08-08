@@ -96,14 +96,13 @@ const Home = () => {
                         />
                     </Grid>
                     <Grid item xs={6} sm={7} md={6}>
-                        <h3>Elvis Cheung</h3>
+                        <h3>Ka Wai Cheung</h3>
                         <br/>
                         <p>
                             I am no longer a perfectionist. <br /><br />
                             I learn things that interest me and also build things that interest you. <br />
                             After many years of struggling, I still do not give up on software engineering.
                         </p>
-                        <br />
                         <p>
                             I hope I can brainstorm ideas in this blog and it is also useful to you.
                         </p>
