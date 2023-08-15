@@ -29,4 +29,5 @@ RUN dotnet publish "netcore_blog.csproj" -c Release -o /app/publish /p:UseAppHos
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY ./ClientApp/src ./wwwroot
 ENTRYPOINT ["dotnet", "netcore_blog.dll"]

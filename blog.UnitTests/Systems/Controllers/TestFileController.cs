@@ -13,14 +13,11 @@ public class TestFileController
     [Fact]
     public void Upload_OnSuccess_ReturnsStatusCode200()
     {
-        var mockEnvironment = new Mock<IWebHostEnvironment>();
-        mockEnvironment.Setup(m => m.WebRootPath).Returns(Environment.CurrentDirectory);
-
         var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
         var httpContext = new DefaultHttpContext();
         httpContextAccessorMock.Setup(h => h.HttpContext).Returns(httpContext);
 
-        var fileController = new FileController(mockEnvironment.Object, httpContextAccessorMock.Object);
+        var fileController = new FileController(httpContextAccessorMock.Object);
 
         var mockFile = new Mock<IFormFile>();
         var sourceImg = File.OpenRead(@"img1.jpg");

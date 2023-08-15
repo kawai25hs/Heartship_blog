@@ -1,14 +1,14 @@
 using Microsoft.OpenApi.Models;
+using netcore_blog;
 using netcore_blog.Models;
 using netcore_blog.Services;
 
 
-var builder = WebApplication.CreateBuilder(
-    new WebApplicationOptions()
-    {
-        WebRootPath = "ClientApp/src"
-    }
-);
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = configStr.rootPath;
+});
 
 // Add services to the container.
 
@@ -42,6 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseSpaStaticFiles();
 app.UseStaticFiles();
 app.UseRouting();
 

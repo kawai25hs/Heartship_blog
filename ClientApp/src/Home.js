@@ -100,10 +100,8 @@ const Home = () => {
                         <br/>
                         <p>
                             I am no longer a perfectionist. <br /><br />
-                            I learn things that interest me and also build things that interest you. <br />
+                            I learn things that interest me and also build things that interest you.
                             After many years of struggling, I still do not give up on software engineering.
-                        </p>
-                        <p>
                             I hope I can brainstorm ideas in this blog and it is also useful to you.
                         </p>
                     </Grid>

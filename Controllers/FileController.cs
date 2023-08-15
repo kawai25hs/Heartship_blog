@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Configuration;
 
 namespace netcore_blog.Controllers
 {
@@ -11,12 +12,10 @@ namespace netcore_blog.Controllers
     [Route("[controller]")]
     public class FileController : ControllerBase
     {
-        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public FileController(IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public FileController(IHttpContextAccessor httpContextAccessor)
         {
-            hostingEnvironment = environment;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -32,7 +31,7 @@ namespace netcore_blog.Controllers
                 var now = DateTime.Now.ToString("yyyyMMdd_HH_mm_ss");
                 string fileName = file.FileName.Substring(0, file.FileName.LastIndexOf(".")) + "_" + now + file.FileName.Substring(file.FileName.LastIndexOf("."));
 
-                string path = Path.Combine(hostingEnvironment.WebRootPath, uploadFolder, fileName);
+                string path = Path.Combine(configStr.rootPath, uploadFolder, fileName);
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
                     file.FormFile.CopyTo(stream);
