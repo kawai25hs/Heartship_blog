@@ -39,6 +39,15 @@ namespace netcore_blog.Controllers
             return CreatedAtAction(nameof(Get), new { id = newPost.Id }, newPost);
         }
 
+        [HttpGet]
+        [Route("GetFeaturedPost")]
+        public async Task<List<PostsModel>> GetFeaturedPost()
+        {
+            var featuredPost = await _postsService.GetFeaturedPostAsync();
+
+            return featuredPost;
+        }
+
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, PostsModel updatedBook)
         {

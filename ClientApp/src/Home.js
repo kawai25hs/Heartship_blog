@@ -1,15 +1,15 @@
 import homepageImg from './img/homepageImg.jpg';
 import me from './img/me.jpg';
-import img1 from './img/img1.jpg';
-//import img1 from '../../wwwroot/uploads/img1_20230629_09_11_52.jpg';
-import img2 from './img/img2.jpg';
-import img3 from './img/img3.jpg';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
+import { useLoaderData } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+export default function Home() {
+    const featuredPosts = useLoaderData()
+    let navigate = useNavigate();
+
     return ( 
         <div className="home">
             <Grid container className="homepageHeader">
@@ -29,55 +29,22 @@ const Home = () => {
                     <h1 className="featuredPostsHDR">Featured posts</h1>
                 </Grid>
 
-                <Grid container className="featuredPosts" spacing={{ xs: 2, sm: 3, md: 4, lg: 6 }}>
-                    <Grid item xs={12} md={6} lg={4}>
-                        <Box
-                            component="img"
-                            sx={{
-                            borderRadius: 0
-                            }}
-                            alt="me"
-                            src={img1}
-                        />
-                        <h3>To me and everyone</h3>
-                        <p className='greywords'>
-                            Right off the bat, when people land on your site, 
-                            you want them to understand who you are, what you do, 
-                            and what you’re looking for.
-                        </p>                        
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                        <Box
-                            component="img"
-                            sx={{
-                            borderRadius: 0
-                            }}
-                            alt="me"
-                            src={img2}
-                        />
-                        <h3>To me and everyone</h3>
-                        <p className='greywords'>
-                            Right off the bat, when people land on your site, 
-                            you want them to understand who you are, what you do, 
-                            and what you’re looking for.
-                        </p>                        
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                        <Box
-                            component="img"
-                            sx={{
-                            borderRadius: 0
-                            }}
-                            alt="me"
-                            src={img3}
-                        />
-                        <h3>To me and everyone</h3>
-                        <p className='greywords'>
-                            Right off the bat, when people land on your site, 
-                            you want them to understand who you are, what you do, 
-                            and what you’re looking for.
-                        </p>                        
-                    </Grid>
+                <Grid container className="featuredPosts" spacing={{ xs: 2, sm: 3, md: 4, lg: 6 }} sx={{ alignItems: 'center' }}>
+                    {featuredPosts.map((post) => (
+                        <Grid item xs={6} md={4} onClick={() => navigate(`/post/${post?.id}`)} sx={{ cursor: 'pointer' }}>
+                            <Box
+                                component="img"
+                                sx={{
+                                borderRadius: 0
+                                }}
+                                src={post?.thumbnail}
+                            />
+                            <h3>{post?.subject}</h3>
+                            <p className='greywords'>
+                                {post?.description}
+                            </p>                        
+                        </Grid>
+                    ))}
                 </Grid>
 
                 <Grid item xs={12}> 
@@ -110,5 +77,13 @@ const Home = () => {
         </div>
      );
 }
- 
-export default Home;
+
+export const homeLoader = async () => {
+    const res = await fetch('/posts/GetFeaturedPost')
+
+    if (!res.ok) {
+        throw Error('Could not find featured posts.')
+    }
+
+    return res.json()
+}

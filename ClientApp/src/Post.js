@@ -7,13 +7,11 @@ export default function Post() {
 //     const contentBlock = htmlToDraft("<p>12345</p>");
 // const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
 
-
 // const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState));
-
 
     return (
         <div className="postWrapper">
-            <Grid container className="pageHeader">
+            <Grid container className="pageHeader" xs>
                 <h1>{post?.subject}</h1>
             </Grid>
             <Grid container className="pageContainer">

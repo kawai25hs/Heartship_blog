@@ -1,6 +1,6 @@
 import logo from '../img/logo.svg';
 import Footer from '../Footer';
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, ScrollRestoration } from "react-router-dom";
 
 export default function Root() {
     return (
@@ -20,6 +20,7 @@ export default function Root() {
                 <Outlet/>
                 <Footer/>
             </main>
+            <ScrollRestoration />
         </div>
     )
 }

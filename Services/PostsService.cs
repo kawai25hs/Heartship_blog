@@ -27,6 +27,9 @@ namespace netcore_blog.Services
         public async Task<PostsModel?> GetAsync(string id) =>
             await _postsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
+        public async Task<List<PostsModel>> GetFeaturedPostAsync() =>
+            await _postsCollection.Find(x => x.isFeatured == true).ToListAsync();
+
         public async Task CreateAsync(PostsModel newBook) =>
             await _postsCollection.InsertOneAsync(newBook);
 
