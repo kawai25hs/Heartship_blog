@@ -3,7 +3,6 @@ using netcore_blog;
 using netcore_blog.Models;
 using netcore_blog.Services;
 
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSpaStaticFiles(configuration =>
 {
@@ -22,6 +21,7 @@ builder.Services.Configure<DevDatabaseSettings>(
     builder.Configuration.GetSection("DevDatabase"));
 
 builder.Services.AddSingleton<PostsService>();
+builder.Services.AddSingleton<UserService>();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
@@ -44,8 +44,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseSpaStaticFiles();
 app.UseStaticFiles();
-app.UseRouting();
-
+//app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",

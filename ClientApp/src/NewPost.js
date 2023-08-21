@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import date from 'date-and-time';
 import { useNavigate } from "react-router-dom";
+import useAuth from './components/useAuth';
 
 export default function NewPost() {
     const [subject, setSubject] = useState("");
@@ -23,9 +24,10 @@ export default function NewPost() {
 
     const [thumbnail, setThumbnail] = useState(null);
     const [thumbnailFile, setThumbnailFile] = useState(null);
-    const [uploadedImages, setUploadedImages] = useState([]);
+    // const [uploadedImages, setUploadedImages] = useState([]);
     const [isValid, setIsValid] = useState({subject: false, category: false, description: false, thumbnailFile: false});
     const [formError, setFormError] = useState(false);
+    const { authed, username } = useAuth();
 
     let navigate = useNavigate();
 
@@ -61,16 +63,16 @@ export default function NewPost() {
         // later when we decide what to do with it.
     
         // Make sure you have a uploadImages: [] as your default state
-        let images = uploadedImages;
+        // let images = uploadedImages;
         
         const imageObject = {
           file: file,
           localSrc: imgSrc, //URL.createObjectURL(file),
         }
-        console.log('imageObject', imageObject);
-        images.push(imageObject);
+        // console.log('imageObject', imageObject);
+        // images.push(imageObject);
     
-        setUploadedImages(images);
+        // setUploadedImages(images);
     
         // We need to return a promise with the image src
         // the img src we will use here will be what's needed
@@ -81,25 +83,6 @@ export default function NewPost() {
             resolve({ data: { link: imageObject.localSrc } });
           }
         );
-    // return new Promise(
-    //     (resolve, reject) => {
-    //       const xhr = new XMLHttpRequest();
-    //       xhr.open('POST', 'https://api.imgur.com/3/image');
-    //       xhr.setRequestHeader('Authorization', 'Client-ID XXXXX');
-    //       const data = new FormData();
-    //       data.append('image', file);
-    //       xhr.send(data);
-    //       xhr.addEventListener('load', () => {
-    //         const response = JSON.parse(xhr.responseText);
-    //         resolve(response);
-    //       });
-    //       xhr.addEventListener('error', () => {
-    //         const error = JSON.parse(xhr.responseText);
-    //         reject(error);
-    //       });
-    //     }
-    //   );
-
     };
 
     const prepareImgFormData = (file) => {
@@ -112,7 +95,7 @@ export default function NewPost() {
 
     const uploadImage = async (fileData) => {
         const response = await axios.post('file/upload', fileData);
-        console.log('response data', response.data);
+        //console.log('response data', response.data);
         return response.data;
     };
 
@@ -139,14 +122,14 @@ export default function NewPost() {
                 description: description,
                 thumbnail: thumbnailName,
                 isFeatured: isFeatured,
-                createdBy: 'Elvis',
+                createdBy: username,
                 createDate: today
             })
             .then((response) => {
                 navigate(`/post/${response.data.id}`);  
-                console.log(response.data);
+                //console.log(response.data);
             }, (error) => {
-                console.log(error);
+                //console.log(error);
             });
         }
     };
@@ -178,13 +161,13 @@ export default function NewPost() {
         });
     }, [description]);
 
-    useEffect(() => {
-        console.log('editorState', draftToHtml(convertToRaw(editorState?.getCurrentContent())));
-    }, [editorState]);
+    // useEffect(() => {
+    //     console.log('editorState', draftToHtml(convertToRaw(editorState?.getCurrentContent())));
+    // }, [editorState]);
 
-    useEffect(() => {
-        console.log('uploadedImages', uploadedImages);
-    }, [uploadedImages]);
+    // useEffect(() => {
+    //     console.log('uploadedImages', uploadedImages);
+    // }, [uploadedImages]);
 
     useEffect(() => {
         if (thumbnailFile) {

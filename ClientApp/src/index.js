@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { cyan, amber } from '@mui/material/colors';
+import {AuthProvider} from './components/useAuth';
 
 const theme = createTheme({
   typography: {
@@ -24,7 +25,9 @@ const theme = createTheme({
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </ThemeProvider >,
   document.getElementById('root')
 );

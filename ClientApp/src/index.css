@@ -11,6 +11,10 @@ html, body {
   overflow-x: hidden;
 }
 
+a:hover {
+  cursor: pointer;
+}
+
 p {
   margin-bottom: 30px;
 }
@@ -253,6 +257,21 @@ main {
   font-family: 'Italiana', serif;
   color: rgb(255, 255, 255);
   text-align: center;
+}
+
+.loginWrapper {
+  background-color: black;
+  width: 100vw;
+  min-height: 100vh;
+  font-family: 'Italiana', serif;
+  color: rgb(255, 255, 255);
+}
+
+.loginContainer {
+  padding: 30px;
+  margin: 0 auto;
+  max-width: 600px;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .greywords {

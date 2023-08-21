@@ -3,7 +3,7 @@ const Footer = () => {
         <div className="footer">
             &copy; 2023 Heartship
             <p/>
-            <p>Email: kawai25hs@gmail.com</p>
+            <p className="greywords">Email: kawai25hs@gmail.com</p>
         </div>
      );
 }

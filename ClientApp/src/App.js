@@ -9,11 +9,14 @@ import Home, {homeLoader} from './Home';
 import Blog, { blogLoader } from './Blog';
 import NewPost from './NewPost';
 import Post, { postLoader } from './Post';
+import PostError from './PostError';
+import Login from "./Login";
+// import Register from "./Register";
 import NotFound from './NotFound';
+import RequireAuth from './components/RequireAuth';
 
 //layout
 import Root from './layout/Root';
-import PostError from './PostError';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,13 +29,15 @@ const router = createBrowserRouter(
         <Route path="blog" element={<Blog />}
           loader={blogLoader}
         />
-        <Route path="newPost" element={<NewPost />} />
+        <Route path="newPost" element={<RequireAuth><NewPost /></RequireAuth>} />
         <Route
           element={<Post />}
           path="post/:Id"
           loader={postLoader}
           errorElement={<PostError/>}
         />
+        <Route path="Login" element={<Login />} />
+        {/* <Route path="Register" element={<Register />} /> */}
         <Route path='*' element={<NotFound />} />
       </Route>
   )
